@@ -1,0 +1,89 @@
+import ArrayStack
+import ArrayQueue
+    
+class Graph:
+
+    
+    def __init__(self, ver):
+        self.adjMatrix = []
+        self.ver = ver
+        self.neighbour=[]
+        self.visited=[]
+        
+        for i in range(self.ver):
+            self.adjMatrix.append([0 for i in range(self.ver)])
+               
+
+
+    def AddEdge(self, src, dest):
+      try:
+        
+        self.adjMatrix[src][dest] = 1
+        self.adjMatrix[dest][src] = 1
+        return self.adjMatrix
+      except:
+        print ("The eadges you given is not present")
+
+    def GetNeighbours(self,v):
+      for i in range(len(self.adjMatrix[v])):
+        if self.adjMatrix[v][i] == 1:
+          self.neighbour.append(i)  
+      return self.neighbour
+
+    def BFS(self,source):
+      neighbiour=[]
+      q=ArrayQueue.Queue(self.ver)
+      q.Enqueue(source)
+      self.visited.append(source)
+      while not q.IsEmpty():
+        x=q.Dequeue()
+        print(f"Visited {x}")
+       
+        neighbiour=self.GetNeighbours(x)
+
+        for i in neighbiour:
+          if i not in self.visited:
+            q.Enqueue(i)
+            self.visited.append(i)
+
+    def DFS(self,source):
+      neighbiour=[]
+      s=ArrayStack.Stack(self.ver)
+      s.Push(source)
+      self.visited.append(source)
+      while not s.IsEmpty():
+        x=s.Pop()
+        print(f"Visited {x}")
+
+        neighbiour=self.GetNeighbours(x)
+
+        for i in neighbiour:
+          if i not in self.visited:
+            s.Push(i)
+            self.visited.append(i)
+  
+    def print_matrix(self):
+      for i in range(self.ver):
+        for j in range(self.ver):
+          print(self.adjMatrix[i][j],end=" ")
+        print()
+
+        
+  
+    
+
+
+
+g = Graph(5)
+g.AddEdge(0,1) 
+g.AddEdge(1,3)
+g.AddEdge(0,2) 
+ 
+g.AddEdge(3,0)
+print(g.GetNeighbours(0)) 
+g.BFS(0)
+g.DFS(0)
+print()
+      
+
+g.print_matrix()
